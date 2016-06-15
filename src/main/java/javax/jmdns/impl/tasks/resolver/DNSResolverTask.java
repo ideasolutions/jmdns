@@ -61,7 +61,7 @@ public abstract class DNSResolverTask extends DNSTask {
             if (this.getDns().isCanceling() || this.getDns().isCanceled()) {
                 this.cancel();
             } else {
-                if (_count++ < 3) {
+                if (_count++ < getExecutionCount()) {
                     if (logger.isDebugEnabled()) {
                         logger.debug(this.getName() + ".run() JmDNS " + this.description());
                     }
@@ -82,6 +82,10 @@ public abstract class DNSResolverTask extends DNSTask {
             logger.warn(this.getName() + ".run() exception ", e);
             this.getDns().recover();
         }
+    }
+
+    protected int getExecutionCount() {
+        return 3;
     }
 
     /**
